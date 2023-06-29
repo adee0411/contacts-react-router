@@ -37,6 +37,13 @@ button {
   line-height: 1.5;
   margin: 0;
 }
+a {
+  text-decoration: none;
+}
+a:active,
+a:visited {
+  color: inherit;
+}
 button {
   color: #3992ff;
   font-weight: 500;
@@ -49,6 +56,21 @@ button:hover {
 button:active {
   box-shadow: 0 0px 1px hsla(0, 0%, 0%, 0.4);
   transform: translateY(1px);
+}
+#contact-home {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#contact-home img {
+  width: 40%;
+}
+#contact-home p {
+  font-size: 24px;
+  font-weight: 100;
 }
 #contact h1 {
   display: flex;
@@ -111,7 +133,7 @@ form[action$="destroy"] button {
   margin: 0;
   padding: 1rem 2rem;
   border-top: 1px solid #e3e3e3;
-  order: 1;
+  order: 0;
   line-height: 1;
 }
 #sidebar h1::before {
@@ -261,6 +283,7 @@ i {
   margin: 1rem 0;
 }
 #contact-form {
+  margin-top: 18px;
   display: flex;
   max-width: 40rem;
   flex-direction: column;

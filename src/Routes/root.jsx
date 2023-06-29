@@ -1,8 +1,26 @@
+import {
+  Outlet,
+  Link,
+  NavLink,
+  useLoaderData,
+  Form,
+  redirect,
+  useNavigation,
+} from "react-router-dom";
+import { getContacts, createContact } from "../contacts";
+
+import ContactSVG from "../assets/undraw_phone_call_re_hx6a.svg";
+
 const Root = () => {
+  const { contacts } = useLoaderData();
+  const navigation = useNavigation();
+
   return (
     <>
       <div id="sidebar">
-        <h1>React Router Contacts</h1>
+        <Link to="/">
+          <h1>React Router Contacts</h1>
+        </Link>
         <div>
           <form id="search-form" role="search">
             <input
@@ -15,24 +33,62 @@ const Root = () => {
             <div id="search-spinner" aria-hidden hidden={true}></div>
             <div className="sr-only" aria-live="polite"></div>
           </form>
-          <form method="post">
+          <Form method="post">
             <button type="submit">New</button>
-          </form>
+          </Form>
         </div>
         <nav>
-          <ul>
-            <li>
-              <a href="/contacts/1">Your Name</a>
-            </li>
-            <li>
-              <a href="/contacts/2">Your Friend</a>
-            </li>
-          </ul>
+          {contacts.length ? (
+            <ul>
+              {contacts.map((contact) => (
+                <li key={contact.id}>
+                  <NavLink
+                    to={`contacts/${contact.id}`}
+                    className={({ isActive, isPending }) => {
+                      return isActive ? "active" : isPending ? "pending" : "";
+                    }}
+                  >
+                    {contact.first || contact.last ? (
+                      <>
+                        {contact.first} {contact.last}
+                      </>
+                    ) : (
+                      <i>No Name</i>
+                    )}{" "}
+                    {contact.favorite && <span>★</span>}
+                  </NavLink>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>
+              <i>No contacts</i>
+            </p>
+          )}
         </nav>
       </div>
-      <div id="detail"></div>
+
+      <div
+        id="detail"
+        className={navigation.state === "loading" ? "loading" : ""}
+      >
+        <Outlet />
+      </div>
     </>
   );
 };
 
 export default Root;
+
+export async function loader() {
+  const contacts = await getContacts();
+
+  return { contacts };
+}
+
+export async function action() {
+  const contact = await createContact();
+
+  return redirect(`/contacts/${contact.id}/edit`);
+  //return { contact };
+}

@@ -3,8 +3,6 @@ import * as ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
 
-import ContactSVG from "./assets/undraw_phone_call_re_hx6a.svg";
-
 import Root from "./Routes/root";
 import ErrorPage from "./ErrorPage";
 import Contact from "./Routes/contact";

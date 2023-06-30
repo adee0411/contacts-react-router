@@ -8,12 +8,15 @@ import {
   useNavigation,
 } from "react-router-dom";
 import { getContacts, createContact } from "../contacts";
-
-import ContactSVG from "../assets/undraw_phone_call_re_hx6a.svg";
+import { useEffect } from "react";
 
 const Root = () => {
-  const { contacts } = useLoaderData();
+  const { contacts, q } = useLoaderData();
   const navigation = useNavigation();
+
+  useEffect(() => {
+    document.getElementById("q").value = "";
+  }, [q]);
 
   return (
     <>
@@ -22,17 +25,18 @@ const Root = () => {
           <h1>React Router Contacts</h1>
         </Link>
         <div>
-          <form id="search-form" role="search">
+          <Form id="search-form" role="search">
             <input
               id="q"
               aria-label="Search contacts"
               placeholder="Search"
               type="search"
               name="q"
+              defaultValue={q}
             />
             <div id="search-spinner" aria-hidden hidden={true}></div>
             <div className="sr-only" aria-live="polite"></div>
-          </form>
+          </Form>
           <Form method="post">
             <button type="submit">New</button>
           </Form>
@@ -80,10 +84,12 @@ const Root = () => {
 
 export default Root;
 
-export async function loader() {
-  const contacts = await getContacts();
+export async function loader({ request }) {
+  const url = new URL(request.url);
+  const q = url.searchParams.get("q"); // get the value of input's name property
+  const contacts = await getContacts(q);
 
-  return { contacts };
+  return { contacts, q };
 }
 
 export async function action() {

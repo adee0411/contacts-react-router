@@ -1,6 +1,8 @@
 import { Form, Outlet, useLoaderData } from "react-router-dom";
 import { getContact } from "../contacts";
 
+import { FaTwitter } from "../../node_modules/react-icons/fa/index";
+
 export default function Contact() {
   /*const contact = {
     first: "Your",
@@ -36,6 +38,7 @@ export default function Contact() {
 
           {contact.twitter && (
             <p>
+              {FaTwitter}
               <a
                 target="_blank"
                 href={`https://twitter.com/${contact.twitter}`}
